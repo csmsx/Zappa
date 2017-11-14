@@ -2048,7 +2048,7 @@ class ZappaCLI(object):
         # Must have at least one
         if not os.path.isfile(zs_json) \
             and not os.path.isfile(zs_yml) \
-            and not os.path.isfile(zs_yaml) \
+            and not os.path.isfile(zs_yaml):
             raise ClickException("Please configure a zappa_settings file or call `zappa init`.")
 
         # Prefer JSON
