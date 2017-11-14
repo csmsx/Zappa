@@ -725,20 +725,26 @@ class TestZappa(unittest.TestCase):
         self.assertEqual('lmbda', zappa_cli.stage_config['s3_bucket'])
         self.assertEqual(True, zappa_cli.stage_config['touch'])
 
-    def test_load_settings_toml(self):
+    def test_load_settings_yaml(self):
         zappa_cli = ZappaCLI()
         zappa_cli.api_stage = 'ttt888'
-        zappa_cli.load_settings('tests/test_settings.toml')
+        zappa_cli.load_settings('tests/test_settings.yaml')
         self.assertEqual(False, zappa_cli.stage_config['touch'])
+
+        zappa_cli = ZappaCLI()
+        zappa_cli.api_stage = 'extendo'
+        zappa_cli.load_settings('tests/test_settings.yaml')
+        self.assertEqual('lmbda', zappa_cli.stage_config['s3_bucket'])
+        self.assertEqual(True, zappa_cli.stage_config['touch'])
 
     def test_settings_extension(self):
         """
-        Make sure Zappa uses settings in the proper order: JSON, TOML, YAML.
+        Make sure Zappa uses settings in the proper order: JSON, YAML.
         """
         tempdir = tempfile.mkdtemp(prefix="zappa-test-settings")
         shutil.copy("tests/test_one_env.json", tempdir + "/zappa_settings.json")
         shutil.copy("tests/test_settings.yml", tempdir + "/zappa_settings.yml")
-        shutil.copy("tests/test_settings.toml", tempdir + "/zappa_settings.toml")
+        shutil.copy("tests/test_settings.yml", tempdir + "/zappa_settings.yaml")
 
         orig_cwd = os.getcwd()
         os.chdir(tempdir)
@@ -752,13 +758,9 @@ class TestZappa(unittest.TestCase):
             self.assertIn("lonely", zappa_cli.zappa_settings)
             os.unlink("zappa_settings.json")
 
-            # Without the JSON file, we should get the TOML file.
-            self.assertEqual(zappa_cli.get_json_or_yaml_settings(),
-                             "zappa_settings.toml")
             zappa_cli.load_settings_file()
             self.assertIn("ttt888", zappa_cli.zappa_settings)
             self.assertNotIn("devor", zappa_cli.zappa_settings)
-            os.unlink("zappa_settings.toml")
 
             # With just the YAML file, we should get it.
             self.assertEqual(zappa_cli.get_json_or_yaml_settings(),
