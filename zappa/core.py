@@ -560,6 +560,12 @@ class Zappa(object):
                 print(e)
                 # XXX - What should we do here?
 
+        # Slim down the package by removing test-related contents
+        for (dirpath, dirnames, filenames) in os.walk(temp_project_path):
+            for dirname in dirnames:
+                if 'test' in dirname:
+                    shutil.rmtree(dirname)
+
         # Then archive it all up..
         if archive_format == 'zip':
             print("Packaging project as zip.")
