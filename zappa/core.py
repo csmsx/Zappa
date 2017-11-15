@@ -755,7 +755,7 @@ class Zappa(object):
             print(" - {}=={}: Downloading".format(package_name, package_version))
             with open(wheel_path, 'wb') as f:
                 self.download_url_with_progress(wheel_url, f, disable_progress)
-            
+
             if not zipfile.is_zipfile(wheel_path):
                 return None
         else:
@@ -798,7 +798,7 @@ class Zappa(object):
                 return None
             with open(json_file_path, 'wb') as metafile:
                 jsondata = json.dumps(data)
-                metafile.write(bytes(jsondata, "utf-8")) 
+                metafile.write(bytes(jsondata, "utf-8"))
 
         if package_version not in data['releases']:
             return None
