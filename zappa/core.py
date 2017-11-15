@@ -564,7 +564,7 @@ class Zappa(object):
         for (dirpath, dirnames, filenames) in os.walk(temp_project_path):
             for dirname in dirnames:
                 if 'test' in dirname:
-                    shutil.rmtree(dirname, ignore_errors=True)
+                    shutil.rmtree(os.path.sep.join([dirpath, dirname]))
 
         # Then archive it all up..
         if archive_format == 'zip':
