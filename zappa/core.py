@@ -563,7 +563,7 @@ class Zappa(object):
         # Slim down the package by removing test-related contents
         for (dirpath, dirnames, filenames) in os.walk(temp_project_path):
             for dirname in dirnames:
-                if dirname in ['test', 'tests', 'doc', 'docs']:
+                if dirname in ['test', 'tests']:
                     shutil.rmtree(os.path.sep.join([dirpath, dirname]))
 
         # Then archive it all up..
